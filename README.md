@@ -2,6 +2,8 @@
 
 Prototype Flask du cahier des charges: génération d'idées, script, audio, storyboard, montage et préparation de publication YouTube à partir d'un sujet.
 
+Auteur: idriss-aaidoun
+
 Le cahier des charges formel est disponible dans [docs/cahier_des_charges.md](docs/cahier_des_charges.md).
 
 ## Démarrage
