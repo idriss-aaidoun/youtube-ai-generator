@@ -1,0 +1,40 @@
+# Python cache and bytecode
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Test and coverage artifacts
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Local environment files
+.env
+.env.*
+
+# SQLite and local data
+*.db
+*.sqlite3
+instance/
+
+# Generated media and outputs
+*.mp4
+*.mov
+*.wav
+*.mp3
+*.srt
+*.png
+*.jpg
+*.jpeg
+*.webp
+
+# OS and editor files
+.DS_Store
+Thumbs.db
+.vscode/

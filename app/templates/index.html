@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ app_name }}</title>
+  <meta
+    name="description"
+    content="Prototype Flask pour automatiser la création de vidéos YouTube à partir d'un sujet."
+  >
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+  <div class="ambient ambient-one"></div>
+  <div class="ambient ambient-two"></div>
+  <div class="ambient ambient-three"></div>
+
+  <main class="page-shell" id="top">
+    <header class="site-header panel">
+      <a class="brand" href="#top" aria-label="YouTube AI Studio">
+        <span class="brand-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" role="presentation">
+            <path d="M5 7.5C5 6.12 6.12 5 7.5 5h9C17.88 5 19 6.12 19 7.5v9c0 1.38-1.12 2.5-2.5 2.5h-9C6.12 19 5 17.88 5 16.5v-9Z" stroke="currentColor" stroke-width="1.6"/>
+            <path d="M10 9.2v5.6l4.8-2.8-4.8-2.8Z" fill="currentColor"/>
+          </svg>
+        </span>
+        <span class="brand-copy">
+          <strong>YouTube AI Studio</strong>
+          <small>Automatisation premium du brief à la publication</small>
+        </span>
+      </a>
+
+      <nav class="header-actions" aria-label="Navigation rapide">
+        <a class="ghost-button" href="#generator">Lancer la génération</a>
+        <a class="ghost-button" href="#compliance">Voir la conformité</a>
+      </nav>
+    </header>
+
+    <section class="hero panel">
+      <div class="hero-copy">
+        <p class="eyebrow">Cahier des charges maîtrisé</p>
+        <h1>Une interface SaaS premium pour générer des vidéos YouTube de bout en bout.</h1>
+        <p class="lede">
+          Le pipeline couvre l'idée, le script, la voix off, les visuels, le montage, la miniature,
+          les chapitres, les hashtags et la préparation de publication YouTube avec des fallbacks locaux.
+        </p>
+
+        <div class="hero-actions">
+          <a class="primary-button hero-cta" href="#generator">
+            <span>Lancer une vidéo</span>
+            <svg class="button-icon" viewBox="0 0 24 24" fill="none" role="presentation">
+              <path d="M5 12h12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+              <path d="m13 6 6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+          <a class="secondary-button" href="#result-panel">Voir la sortie</a>
+        </div>
+
+        <div class="hero-badges" aria-label="Fonctionnalités principales">
+          <span>Analyse de tendance multi-signal</span>
+          <span>Script structuré</span>
+          <span>Miniature + upload</span>
+          <span>Chapitres et hashtags</span>
+        </div>
+      </div>
+
+      <aside class="hero-aside">
+        <div class="metric-card">
+          <span class="metric-label">Pipeline modulaire</span>
+          <strong>Flask + SQLAlchemy</strong>
+          <p>Chaque étape écrit des artefacts inspectables et reste remplaçable sans casser l'expérience utilisateur.</p>
+        </div>
+
+        <div class="pipeline-grid">
+          <div>
+            <span>Idée</span>
+            <strong>Tendance + angle</strong>
+          </div>
+          <div>
+            <span>Script</span>
+            <strong>3 parties</strong>
+          </div>
+          <div>
+            <span>Visuel</span>
+            <strong>Images + miniature</strong>
+          </div>
+          <div>
+            <span>Publication</span>
+            <strong>YouTube prêt à brancher</strong>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <section class="workspace">
+      <article class="panel generator-panel" id="generator">
+        <div class="panel-header">
+          <div>
+            <p class="section-label">Générateur</p>
+            <h2>Construire le brief de la vidéo</h2>
+          </div>
+          <p class="panel-note">Le formulaire pilote le pipeline complet via <code>/api/generate</code>.</p>
+        </div>
+
+        <form id="generation-form" class="generation-form">
+          <div class="field-grid">
+            <label class="floating-field">
+              <input name="title" placeholder=" " value="Automatiser une chaîne YouTube">
+              <span>Titre souhaité</span>
+            </label>
+
+            <label class="floating-field">
+              <input name="topic" placeholder=" " value="Automatiser une chaîne YouTube" required>
+              <span>Topic / sujet</span>
+            </label>
+
+            <label class="floating-field field-wide">
+              <textarea name="description" rows="4" placeholder=" ">Créer un workflow clair, réaliste et orienté créateurs.</textarea>
+              <span>Description / brief</span>
+            </label>
+
+            <label class="select-field">
+              <span>Audience</span>
+              <select name="audience">
+                <option value="creators" selected>Créateurs</option>
+                <option value="founders">Fondateurs</option>
+                <option value="marketers">Marketers</option>
+                <option value="students">Étudiants</option>
+                <option value="general">Général</option>
+              </select>
+            </label>
+
+            <label class="select-field">
+              <span>Langue</span>
+              <select name="language">
+                <option value="fr" selected>Français</option>
+                <option value="en">English</option>
+                <option value="es">Español</option>
+              </select>
+            </label>
+
+            <label class="select-field">
+              <span>Durée cible (min)</span>
+              <input name="duration_minutes" type="number" min="1" max="30" value="3">
+            </label>
+          </div>
+
+          <details class="advanced-panel">
+            <summary>
+              <span>Réglages avancés</span>
+              <span class="summary-hint">Ton et voix</span>
+            </summary>
+
+            <div class="field-grid advanced-grid">
+              <label class="select-field">
+                <span>Ton</span>
+                <select name="tone">
+                  <option value="direct" selected>Direct</option>
+                  <option value="engaging">Engageant</option>
+                  <option value="expert">Expert</option>
+                  <option value="educational">Pédagogique</option>
+                </select>
+              </label>
+
+              <label class="select-field">
+                <span>Voix</span>
+                <select name="voice">
+                  <option value="female" selected>Femme</option>
+                  <option value="male">Homme</option>
+                </select>
+              </label>
+            </div>
+          </details>
+
+          <button type="submit" class="primary-button submit-button">
+            <span>Lancer le pipeline</span>
+            <svg class="button-icon" viewBox="0 0 24 24" fill="none" role="presentation">
+              <path d="M5 12h12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+              <path d="m13 6 6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </form>
+      </article>
+
+      <article class="panel result-panel" id="result-panel">
+        <div class="panel-header">
+          <div>
+            <p class="section-label">Résultat</p>
+            <h2>Sortie générée</h2>
+          </div>
+        </div>
+
+        <div class="status-shell" aria-live="polite">
+          <div class="status-line">
+            <span class="loading-spinner" aria-hidden="true"></span>
+            <p id="status-text" class="panel-note">Prêt à générer une vidéo.</p>
+          </div>
+          <div class="status-progress" aria-hidden="true">
+            <span class="status-progress-fill"></span>
+          </div>
+        </div>
+
+        <div id="result" class="result-stack"></div>
+      </article>
+    </section>
+
+    <section class="panel compliance-panel" id="compliance">
+      <div class="panel-header">
+        <div>
+          <p class="section-label">Conformité</p>
+          <h2>Correspondance avec le cahier des charges</h2>
+        </div>
+        <p class="panel-note">Les exigences fonctionnelles sont couvertes par le pipeline actuel et ses fallbacks locaux.</p>
+      </div>
+
+      <div class="compliance-grid">
+        <article class="compliance-card">
+          <span class="status-pill status-ok">Implémenté</span>
+          <h3>Idée multi-signal</h3>
+          <p>Analyse de tendance, audience, intention, opportunité et risque de concurrence.</p>
+        </article>
+        <article class="compliance-card">
+          <span class="status-pill status-ok">Implémenté</span>
+          <h3>Script structuré</h3>
+          <p>Hook, développement et conclusion, avec fallback local si Hugging Face est indisponible.</p>
+        </article>
+        <article class="compliance-card">
+          <span class="status-pill status-ok">Implémenté</span>
+          <h3>Voix off réaliste</h3>
+          <p>Intégration ElevenLabs, choix homme ou femme, et secours local si la clé API manque.</p>
+        </article>
+        <article class="compliance-card">
+          <span class="status-pill status-ok">Implémenté</span>
+          <h3>Visuels et miniature</h3>
+          <p>Génération d'images via Hugging Face, traçabilité, et miniature YouTube dédiée.</p>
+        </article>
+        <article class="compliance-card">
+          <span class="status-pill status-ok">Implémenté</span>
+          <h3>Montage + sous-titres</h3>
+          <p>Export MP4, transitions, mux audio et fichier SRT généré automatiquement.</p>
+        </article>
+        <article class="compliance-card">
+          <span class="status-pill status-ok">Implémenté</span>
+          <h3>Publication YouTube</h3>
+          <p>Titre, description enrichie, tags, chapitres, hashtags et upload via l'API YouTube Data.</p>
+        </article>
+        <article class="compliance-card">
+          <span class="status-pill status-ok">Implémenté</span>
+          <h3>Architecture modulaire</h3>
+          <p>Chaque étape vit dans un service dédié et produit des artefacts JSON inspectables.</p>
+        </article>
+        <article class="compliance-card">
+          <span class="status-pill status-ok">Implémenté</span>
+          <h3>Contraintes MVP</h3>
+          <p>Chaîne de secours locale, temps de génération raisonnable et interface responsive.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="panel history-panel">
+      <div class="panel-header">
+        <div>
+          <p class="section-label">Historique</p>
+          <h2>Générations récentes</h2>
+        </div>
+        <p class="panel-note">Les brouillons sont conservés localement dans la base SQLite par défaut.</p>
+      </div>
+
+      <div id="video-list" class="video-list"></div>
+    </section>
+  </main>
+
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
