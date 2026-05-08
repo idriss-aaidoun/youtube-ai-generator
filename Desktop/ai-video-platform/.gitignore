@@ -1,0 +1,12 @@
+__pycache__/
+*.pyc
+*.pyo
+.env
+outputs/*/
+models/piper/*.onnx
+models/piper/*.onnx.json
+*.db
+*.sqlite
+.DS_Store
+Thumbs.db
+*.log

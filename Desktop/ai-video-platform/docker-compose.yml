@@ -1,0 +1,70 @@
+version: "3.9"
+
+services:
+
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ai_ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:11434/api/tags || exit 1"]
+      interval: 30s
+      timeout: 15s
+      retries: 5
+      start_period: 30s
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: ai_video_backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./outputs:/app/outputs
+      - ./assets:/app/assets
+      - ./models:/app/models
+      - backend_db:/app/db
+    environment:
+      - OLLAMA_URL=http://ai_ollama:11434
+      - LLM_MODEL=${LLM_MODEL:-mistral}
+      - LLM_TEMPERATURE=0.7
+      - DATABASE_URL=sqlite:///db/videos.db
+      - OUTPUTS_DIR=/app/outputs
+      - VIDEOS_DIR=/app/outputs/videos
+      - AUDIO_DIR=/app/outputs/audio
+      - IMAGES_DIR=/app/outputs/images
+      - ASSETS_DIR=/app/assets
+      - MODELS_DIR=/app/models
+      - PIPER_BIN=/app/models/piper/piper/piper
+      - VIDEO_WIDTH=1920
+      - VIDEO_HEIGHT=1080
+      - VIDEO_FPS=24
+      - PEXELS_API_KEY=${PEXELS_API_KEY:-}
+      - SD_WEBUI_URL=${SD_WEBUI_URL:-}
+      - ADD_BACKGROUND_MUSIC=true
+    depends_on:
+      ollama:
+        condition: service_started
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: ai_video_frontend
+    ports:
+      - "8501:8501"
+    environment:
+      - BACKEND_URL=http://ai_video_backend:8000
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+volumes:
+  ollama_data:
+  backend_db:
